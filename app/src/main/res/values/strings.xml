@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Wallet Application</string>
+    <string name="action_settings">Settings</string>
+    <string name="history">Transactions history</string>
+    <string name="value_plus">Add</string>
+    <string name="value_minus">Remove</string>
+</resources>
