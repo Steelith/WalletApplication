@@ -1,9 +1,9 @@
 package com.kisielarobert.walletapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
@@ -12,7 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+
 public class MainActivity extends AppCompatActivity {
+
+    public static final int STATIC_INTEGER_VALUE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +35,30 @@ public class MainActivity extends AppCompatActivity {
                 startTransactionActivity();
             }
         });
-
-        TextView mainValue = (TextView) findViewById(R.id.MainValueId);
-        //Intent saveTransactionIntent = getIntent();
-        //int intValue = saveTransactionIntent.getIntExtra(TransactionActivity.VALUE_AMOUNT_KEY, 0);
-        //mainValue.setText(intValue);
-
     }
 
     private void startTransactionActivity() {
         Intent transactionIntent = new Intent(this, TransactionActivity.class);
-        startActivity(transactionIntent);
+        startActivityForResult(transactionIntent, STATIC_INTEGER_VALUE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (STATIC_INTEGER_VALUE) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    Double newValue = data.getDoubleExtra(TransactionActivity.VALUE_AMOUNT_KEY, 0);
+                    TextView mainValue = (TextView) findViewById(R.id.MainValueId);
+                    //oldValue change to everytime shared preferences value.
+                    Double oldValue = Double.parseDouble(mainValue.getText().toString());
+                    double doubleSum = newValue + oldValue;
+                    String StringDoubleSum = /*"£ " +*/ Double.toString(doubleSum);
+                    mainValue.setText(StringDoubleSum);
+                }
+                break;
+            }
+        }
     }
 
     @Override
