@@ -1,6 +1,7 @@
 package com.kisielarobert.walletapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,11 +12,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int STATIC_INTEGER_VALUE = 1;
+    public static final String USER_VALUE_SAVED = "SharedPref";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 startTransactionActivity();
             }
         });
+
+        TextView mainValue = (TextView) findViewById(R.id.MainValueId);
+        android.content.SharedPreferences sharedPref = getSharedPreferences(USER_VALUE_SAVED, Context.MODE_PRIVATE);
+        String sharedPrefLoad = sharedPref.getString("StringValue", "Please insert any values first");
+        String StringSum = "£ " + sharedPrefLoad;
+        mainValue.setText(StringSum);
     }
 
     private void startTransactionActivity() {
@@ -48,13 +56,23 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode) {
             case (STATIC_INTEGER_VALUE) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    Double newValue = data.getDoubleExtra(TransactionActivity.VALUE_AMOUNT_KEY, 0);
+                    Double newValueDouble = data.getDoubleExtra(TransactionActivity.VALUE_AMOUNT_KEY, 0);
                     TextView mainValue = (TextView) findViewById(R.id.MainValueId);
-                    //oldValue change to everytime shared preferences value.
-                    Double oldValue = Double.parseDouble(mainValue.getText().toString());
-                    double doubleSum = newValue + oldValue;
-                    String StringDoubleSum = /*"£ " +*/ Double.toString(doubleSum);
-                    mainValue.setText(StringDoubleSum);
+
+                    android.content.SharedPreferences loadSharedPref = getSharedPreferences(USER_VALUE_SAVED, Context.MODE_PRIVATE);
+                    String sharedPrefOldValueString = loadSharedPref.getString("StringValue", "0");
+                    Double oldValueDouble = Double.parseDouble(sharedPrefOldValueString);
+                    double doubleSum = newValueDouble + oldValueDouble;
+                    String StringDoubleSum = Double.toString(doubleSum);
+
+                    android.content.SharedPreferences sharedPref = getSharedPreferences(USER_VALUE_SAVED, Context.MODE_PRIVATE);
+                    android.content.SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("StringValue", StringDoubleSum);
+                    editor.apply();
+                    String StringSum = "£ " + StringDoubleSum;
+                    mainValue.setText(StringSum);
+
+                    Toast.makeText(this, "Value saved!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
