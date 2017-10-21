@@ -1,18 +1,26 @@
 package com.kisielarobert.walletapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class TransactionActivity extends AppCompatActivity {
 
     public static final String VALUE_AMOUNT_KEY = "value key";
+    public static final String ADDITIONAL_INFORMATION = "information key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +39,12 @@ public class TransactionActivity extends AppCompatActivity {
             newValue = newValue * (-1);
         }
 
+        EditText information = (EditText) findViewById(R.id.DescriptionTextId);
+        String infoString = information.getText().toString();
+
         Intent saveTransactionIntent = new Intent(this, MainActivity.class);
         saveTransactionIntent.putExtra(VALUE_AMOUNT_KEY, newValue);
+        saveTransactionIntent.putExtra(ADDITIONAL_INFORMATION, infoString);
         setResult(Activity.RESULT_OK, saveTransactionIntent);
         finish();
     }
