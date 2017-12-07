@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">Wallet Application</string>
-    <string name="action_settings">Settings</string>
-    <string name="history">Transactions history</string>
+    <string name="action_clear">Clear data</string>
+    <string name="transaction_history">Transactions history</string>
     <string name="value_plus">Add</string>
     <string name="value_minus">Remove</string>
+    <string name="value">Value</string>
+    <string name="transaction_hint">Insert an information about transaction</string>
+    <string name="currency">GBP</string>
+    <string name="no_transaction">There are no transactions</string>
+    <string name="save_transaction">Save a transaction</string>
+    <string name="information_transaction">Transaction information</string>
+    <string name="plus_minus">- / +</string>
 </resources>

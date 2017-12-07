@@ -9,40 +9,52 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
-        android:id="@+id/MainValueId"
+        android:id="@+id/BalanceId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="0"
+        android:gravity="start|center"
+        android:text="@android:string/unknownName"
         android:textSize="36sp"
         android:visibility="visible"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/TransactionHistoryId"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/CurrencyId"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/HistoryId"
+        android:id="@+id/TransactionHistoryId"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:gravity="top|center_horizontal"
-        android:text="@string/history"
         android:scrollbars="vertical"
+        android:text="@string/transaction_history"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MainValueId"
+        app:layout_constraintTop_toBottomOf="@+id/BalanceId"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/CurrencyId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="85dp"
+        android:gravity="center"
+        android:text="@string/currency"
+        android:textSize="36sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/BalanceId"
+        app:layout_constraintEnd_toStartOf="@+id/BalanceId"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

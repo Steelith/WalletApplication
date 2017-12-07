@@ -64,7 +64,14 @@ public class TransactionActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_clear) {
+            EditText ValueAmount = (EditText) findViewById(R.id.ValueAmountId);
+            ValueAmount.setText("0");
+
+            EditText information = (EditText) findViewById(R.id.DescriptionTextId);
+            information.setText(R.string.transaction_hint);
+
+            Toast.makeText(this, "data cleared", Toast.LENGTH_SHORT).show();
             return true;
         }
 
