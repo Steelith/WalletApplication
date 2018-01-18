@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         updateTransactions();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        //icon to change
+        //icon to change size but it doesn't work
         fab.setImageDrawable(getResources().getDrawable(R.mipmap.fab_add_button));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView Balance = (TextView) findViewById(R.id.BalanceId);
-        String sumString = loadSharedPreferences();
+        String sumString = loadSharedPreferences("sumString", "0");
         Balance.setText(sumString);
     }
 
@@ -67,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
                     String transactionInformation = data.getStringExtra(TransactionActivity.ADDITIONAL_INFORMATION);
                     TextView mainValue = (TextView) findViewById(R.id.BalanceId);
                     String changeString = Double.toString(changeDouble);
-                    String balanceString = loadSharedPreferences();
+                    String balanceString = loadSharedPreferences("sumString", "0");
                     Double balanceDouble = Double.parseDouble(balanceString);
 
                     String sumString = Double.toString(changeDouble + balanceDouble);
-                    saveSharedPreferences(sumString);
+                    saveSharedPreferences("sumString", sumString);
                     mainValue.setText(sumString);
                     String balanceAndTransaction = changeString + "      " + sumString + "       " + transactionInformation + "\n";
 
@@ -80,27 +80,26 @@ public class MainActivity extends AppCompatActivity {
                         updateTransactions();
                         Toast.makeText(this, "Transaction saved!", Toast.LENGTH_SHORT).show();
                     }
-                }
-                break;
+                } break;
             }
         }
     }
 
     private void updateTransactions(){
-        TextView TransactionHistoryTextView;
-        TransactionHistoryTextView = (TextView) findViewById(R.id.TransactionHistoryId);
-        TransactionHistoryTextView.setMovementMethod(new ScrollingMovementMethod());
-        TransactionHistoryTextView.setText(readFromFile(this));
+        TextView HistoryTextView;
+        HistoryTextView = (TextView) findViewById(R.id.TransactionHistoryId);
+        HistoryTextView.setMovementMethod(new ScrollingMovementMethod());
+        HistoryTextView.setText(readFromFile(this));
     }
 
     private void writeToFile(String data) {
         try {
             if (data.contentEquals("clear_data")) {
-                FileOutputStream fos = openFileOutput("mydata.txt", Context.MODE_PRIVATE);
+                FileOutputStream fos = openFileOutput("my data.txt", Context.MODE_PRIVATE);
                 fos.write("\n".getBytes());
                 fos.close();
             } else {
-                FileOutputStream fos = openFileOutput("mydata.txt", Context.MODE_APPEND);
+                FileOutputStream fos = openFileOutput("my data.txt", Context.MODE_APPEND);
                 fos.write(data.getBytes());
                 fos.close();
             }
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     private String readFromFile(Context context) {
         String ret = "";
         try {
-            InputStream inputStream = context.openFileInput("mydata.txt");
+            InputStream inputStream = context.openFileInput("my data.txt");
 
             if (inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -153,27 +152,57 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_clear) {
-            saveSharedPreferences("0");
+            saveSharedPreferences("sumString", "0");
             mainValue.setText("0");
             writeToFile("clear_data");
             TextView HistoryTextView = (TextView) findViewById(R.id.TransactionHistoryId);
             HistoryTextView.setText(R.string.no_transaction);
             Toast.makeText(this, "Data cleared", Toast.LENGTH_SHORT).show();
             return true;
+        } else if (id==R.id.day_night_mode) {
+            String activeMode = loadSharedPreferences("vision mode", "day_mode");
+            changeNightDayMode(activeMode);
+
+            if (activeMode.contentEquals("day_mode")) {
+                Toast.makeText(this, "Night mode selected", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Day mode selected", Toast.LENGTH_SHORT).show();
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @NonNull
-    private String loadSharedPreferences() {
+    private String loadSharedPreferences(String key, String defaultValue) {
         android.content.SharedPreferences loadSharedPref = getSharedPreferences(USER_VALUE_SAVED, Context.MODE_PRIVATE);
-        return loadSharedPref.getString("StringValue", "0");
+        return loadSharedPref.getString(key, defaultValue);
     }
 
-    private void saveSharedPreferences(String string) {
+
+    private void saveSharedPreferences(String key, String savedValue) {
         android.content.SharedPreferences sharedPref = getSharedPreferences(USER_VALUE_SAVED, Context.MODE_PRIVATE);
         android.content.SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("StringValue", string);
+        editor.putString(key, savedValue);
         editor.apply();
+    }
+
+    private void changeNightDayMode(String activeMode) {
+        if (activeMode.contentEquals("day_mode")) {
+            //getApplication().setTheme(R.style.AppTheme);
+            TextView dayNightMode = (TextView) findViewById(R.id.day_night_mode);
+            TextView stateNumber = (TextView) findViewById(R.id.StateNumber);
+            dayNightMode.setText(R.string.day_mode);
+            stateNumber.setText(R.string.night_mode);
+            saveSharedPreferences("vision mode", "night_mode");
+
+        } else /*(activeMode.contentEquals("night_mode"))*/ {
+            //getApplication().setTheme(R.style.MarineBlueDay);
+            TextView dayNightMode = (TextView) findViewById(R.id.day_night_mode);
+            TextView stateNumber = (TextView) findViewById(R.id.StateNumber);
+            dayNightMode.setText(R.string.night_mode);
+            stateNumber.setText(R.string.day_mode);
+            saveSharedPreferences("vision mode", "day_mode");
+        }
     }
 }

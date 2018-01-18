@@ -8,4 +8,9 @@
         android:orderInCategory="100"
         android:title="@string/action_clear"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/day_night_mode"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="@string/night_mode"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -11,4 +11,6 @@
     <string name="save_transaction">Save a transaction</string>
     <string name="information_transaction">Transaction information</string>
     <string name="plus_minus">- / +</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="day_mode">Day Mode</string>
 </resources>
